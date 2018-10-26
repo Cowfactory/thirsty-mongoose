@@ -1,3 +1,5 @@
+var Beer = require('../models/Beer');
+
 module.exports = {
     // VERB: GET | URL: /beers | VIEW: beers/index 
     index: function() {
