@@ -1,0 +1,12 @@
+<!-- views/bars/new.ejs -->
+<%- include ../partials/header.ejs %>
+<main>
+    <h2>Add a new Bar</h2>
+    <form method="POST" action="/bars" autocomplete="off">
+        <input type="text" name="name" placeholder="Bar name">
+        <input type="text" name="location" placeholder="Bar location">
+        <br><br>
+        <input type="submit" value="Add Bar">
+    </form>
+</main>
+<%- include ../partials/footer.ejs %>

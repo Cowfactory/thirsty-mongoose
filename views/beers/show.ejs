@@ -1,0 +1,14 @@
+<!-- views/beers/show.ejs -->
+<%- include ../partials/header.ejs %>
+<main>
+    <p><%= beer.name %></p>
+    <p><%= beer.style %></p>
+
+    <form method="POST" action="/beers/<%= beer._id %>?_method=DELETE">
+        <button class="delete" type="submit">Delete</button>
+    </form>
+    <form method="GET" action="/beers/<%= beer._id %>/edit">
+        <button class="btn" type="submit">Edit</button>
+    </form>
+</main>
+<%- include ../partials/footer.ejs %>

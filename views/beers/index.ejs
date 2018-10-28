@@ -1,4 +1,14 @@
-<!-- views/bars/index.ejs -->
+<!-- views/beers/index.ejs -->
 <%- include ../partials/header.ejs %>
 <h1>BEERS</h1>
+<a href="/beers/new">Add a new beer</a>
+<% beers.forEach(beer => { %>
+    <p><%= beer.name %></p>
+    <p><%= beer.style %></p>
+    <form method="GET" action="/beers/<%= beer._id %>">
+        <button class=".btn" type="submit">Details</button>
+    </form>
+    <hr>
+<% }) %>
+
 <%- include ../partials/footer.ejs %>
