@@ -1,0 +1,14 @@
+<!-- views/bars/show.ejs -->
+<%- include ../partials/header.ejs %>
+<main>
+    <p><%= bar.name %></p>
+    <p><%= bar.location %></p>
+
+    <form method="POST" action="/bars/<%= bar._id %>?_method=DELETE">
+        <button class="delete" type="submit">Delete</button>
+    </form>
+    <form method="GET" action="/bars/<%= bar._id %>/edit">
+        <button class="btn" type="submit">Edit</button>
+    </form>
+</main>
+<%- include ../partials/footer.ejs %>

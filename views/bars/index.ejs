@@ -1,5 +1,16 @@
 <!-- views/bars/index.ejs -->
 <%- include ../partials/header.ejs %>
+
 <h1>BARS</h1>
 <a href='/bars/new'>Add a new bar</a>
+
+<% bars.forEach(bar => { %>
+    <p><%= bar.name %></p>
+    <p><%= bar.location %></p>
+    <form method="GET" action="/bars/<%= bar._id %>">
+        <button class=".btn" type="submit">Details</button>
+    </form>
+    <hr>
+<% }) %>
+
 <%- include ../partials/footer.ejs %>
