@@ -31,7 +31,7 @@ module.exports = {
     },
     // VERB: GET | URL: /beers/<id> | VIEW: beers/show 
     show: function(req, res, next) {
-        Beer.findById(req.params.id).populate('comments')
+        Beer.findById(req.params.id).populate('bars')
             .exec((err, beer) => {
                 if(err) return next(err);
                 res.render('beers/show', { beer });
