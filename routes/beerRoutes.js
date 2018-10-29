@@ -23,4 +23,9 @@ router.put('/:id', beers.update);
 // VERB: DELETE | URL: /beers/<id> | VIEW: beers/index 
 router.delete('/:id', beers.destroy);
 
+// router.get('/:id', beers.newComment);
+router.post('/:id/comments/new', beers.addComment);
+
+router.delete('/:id/comments/commentId', beers.removeComment);
+
 module.exports = router;

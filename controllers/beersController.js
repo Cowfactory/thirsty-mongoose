@@ -65,5 +65,23 @@ module.exports = {
             .catch((err) => {
                 return next(err);
             })
+    },
+    addComment: function(req, res, next) {
+        Beer.findById(req.params.id, (err, beer) => {
+            if(err) return next(err);
+            let comment = {comment: req.body.content};
+            beer.comments.push(comment);
+            beer.save(err => {
+                if(err) return next(err);
+                res.redirect(`/beers/${beer.id}`);
+            })
+        });
+    },
+    removeComment: function(req, res, next) {
+        Beer.findById(req.params.id, (err, beer) => {
+            if(err) return next(err);
+            
+            // beer.comments.remove()
+        });
     }
 }
