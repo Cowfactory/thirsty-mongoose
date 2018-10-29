@@ -1,6 +1,7 @@
 <!-- views/bars/show.ejs -->
 <%- include ../partials/header.ejs %>
 <main>
+    <h2>Bar:</h2>
     <p><%= bar.name %></p>
     <p><%= bar.location %></p>
 
@@ -10,32 +11,27 @@
     <form method="GET" action="/bars/<%= bar._id %>/edit">
         <button class="btn" type="submit">Edit Bar</button>
     </form>
-    <!-- <form method="GET" action="/bars/<= bar._id %>/addBeer">
-        <button class="btn" type="submit">Add Beer</button>
-    </form> -->
-
-
 
     <h3>Beers on tap:</h3>
     <% if(bar.beers.length === 0) { %>
         <p>This bar has no beers!</p>
     <% } else { %>
-        <% for(beer of bar.beers) { %>
-            <p><%= beer.name %></p>
-        <% } %>
+        <% bar.beers.forEach(beer => { %>
+            <!-- <p><%= beer.name %></p> -->
+            <form method="POST" action="/bars/<%= bar.id %>/beers/<%= beer.id %>?_method=DELETE"  >
+                <label><%= beer.name %></label>
+                <button type="submit" class="btn">
+                    Stop Serving
+                </button>
+            </form>
+        <% }) %>
     <% } %>
 
     <hr>
 
     <h3>Add a Beer</h3>
-    <form method="POST" action="/bars/<%= bar._id %>/beers">
-        <select name="newBeer">
-            <% beerList.forEach(function(beer) { %>
-                <option value="<%= beer._id %>"><%= beer.name %></option>
-            <% }); %>
-        </select>
-        <br>
-        <input type="submit" value="Add Beer">
+    <form method="GET" action="/bars/<%= bar._id %>/beers/new">
+        <button class="btn" type="submit">Add Beer</button>
     </form>
 </main>
 <%- include ../partials/footer.ejs %>

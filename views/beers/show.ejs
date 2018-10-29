@@ -10,5 +10,29 @@
     <form method="GET" action="/beers/<%= beer._id %>/edit">
         <button class="btn" type="submit">Edit</button>
     </form>
+
+    <hr>
+    <h3>Can be found in bars: </h3>
+    <% beer.bars.forEach(bar => { %>
+        <a href="/bars/<%= bar.id %>">
+          <p><%= bar.name %></p>
+        </a>
+    <% }) %>
+
+    <hr>
+    <h3>Add Comment</h3>
+    <form action="/beers/<%= beer.id %>/comments" method="post">
+        <input type="text" name="content" placeholder="add comment...">
+        <input type="submit" class="btn btn-success" value="Add Comment">
+    </form>
+    
+    <hr>
+    <h3>Comments:</h3>
+    <% beer.comments.forEach(comment => { %>
+        <div class="row">
+            <div class="col-xs-2 text-muted"><%= comment.createdAt.toDateString() %></div>
+            <div class="col-xs-10"><%= comment.content %></div>
+        </div>
+    <% }) %>
 </main>
 <%- include ../partials/footer.ejs %>

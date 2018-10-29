@@ -73,38 +73,41 @@ module.exports = {
                 return next(err);
             });
     },
-    addBeer: function(req, res, next) {
-        Promise.all([
-            Bar.findById(req.params.id).exec(),
-            Beer.findById(req.body.newBeer).exec()
-        ])
-        .then(queryResult => {
-            console.log("?:)");
-            let bar = queryResult[0];
-            let beer = queryResult[1];
-            console.log(bar, beer);
-            bar.beers.push(beer);
-            bar.save();
-            res.redirect("/bars/" + bar._id);
+    newBeer: function(req, res, next) {
+        Bar.findById(req.params.id, (err, bar) => {
+            if(err) return next(err);
+            Beer.find({}, function(err, beers) {
+                if(err) return next(err);
+                res.render('bars/addBeer', {barId: bar.id, bar, beers});
+            })
         })
-        .catch(err => next(err) );
+    },
+    addBeer: function(req, res, next) {
+        Bar.findById(req.params.barId, (err, bar) => {
+            bar.beers.push(req.params.beerId);
+            bar.save(() => {
+                Beer.findById(req.params.beerId, (err, beer) => {
+                    beer.bars.push(req.params.barId);
+                    beer.save(() => {
+                        res.redirect(`/bars/${bar.id}`);
+                    });
+                });
+            });
+        });
 
-        // Bar.findById(req.params.id).exec()
-        //     .then((bar) => {
-        //         Beer.findById(req.body.beer)
-        //             .then((beer) => {
-        //                 bar.beers.push(beer);
-        //                 bar.save();
-        //                 res.redirect('/bars/' + req.params.id);
-        //             })
-        //     })
-            
-        //     .catch((err) => {
-        //         return next(err);
-        //     });
     },
     removeBeer: function(req, res, next) {
-
+        Bar.findById(req.params.barId, (err, bar) => {
+            bar.beers.remove(req.params.beerId);
+            bar.save(() => {
+                Beer.findById(req.params.beerId, (err, beer) => {
+                    beer.bars.remove(req.params.barId);
+                    beer.save(() => {
+                        res.redirect(`/bars/${bar.id}`);
+                    });
+                });
+            });
+        });
     },
     // VERB: DELETE | URL: /bars/<id> | VIEW: bars/index 
     destroy: function(req, res, next) {

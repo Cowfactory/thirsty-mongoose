@@ -23,7 +23,11 @@ router.put('/:id', bars.update);
 // VERB: DELETE | URL: /bars/<id> | VIEW: bars/index 
 router.delete('/:id', bars.destroy);
 
-// VERB: GET | URL: /bars/<id>/addBeer | VIEW: bars/addBeer
-router.post('/:id/beers', bars.addBeer);
+router.get('/:id/beers/new', bars.newBeer);
+
+router.post('/:barId/beers/:beerId', bars.addBeer);
+
+router.delete('/:barId/beers/:beerId', bars.removeBeer);
+
 
 module.exports = router;

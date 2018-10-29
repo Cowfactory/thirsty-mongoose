@@ -31,37 +31,30 @@ module.exports = {
     },
     // VERB: GET | URL: /beers/<id> | VIEW: beers/show 
     show: function(req, res, next) {
-        Beer.findById(req.params.id).populate('comments').exec()
-            .then((beer) => {
+        Beer.findById(req.params.id).populate('comments')
+            .exec((err, beer) => {
+                if(err) return next(err);
                 res.render('beers/show', { beer });
-            })
-            .catch((err) => {
-                return next(err);
-            })
+            });
     },
     // VERB: GET | URL: /beers/<id>/edit | VIEW: beers/index 
     edit: function(req, res, next) {
-        Beer.findById(req.params.id)
-            .then((beer) => {
-                res.render('beers/edit', { beer });
-            })
-            .catch((err) => {
-                return next(err);
-            })
-        
+        Beer.findById(req.params.id, function(err, beer) {
+            if(err) return next(err);
+            res.render('beers/edit', { beer });
+        })
     },
     // VERB: PUT | URL: /beers/<id> | VIEW: beers/edit 
     update: function(req, res, next) {
-        Beer.find({})
-            .then((beer) => {
-                beer.name = req.body.name;
-                beer.style = req.body.style;
-                beer.save();
-                res.redirect('/beers/' + beer._id);
-            })
-            .catch((err) => {
-                return next(err);
-            })
+        Beer.findById(req.params.id, (err, beer) => {
+            if(err) return next(err);
+            beer.name = req.body.name;
+            beer.style = req.body.style;
+            beer.save(err => {
+                if(err) return next(err);
+            });
+            res.redirect('/beers/' + beer._id);
+        })
     },
     // VERB: DELETE | URL: /beers/<id> | VIEW: beers/index 
     destroy: function(req, res, next) {

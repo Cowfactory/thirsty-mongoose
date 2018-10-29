@@ -2,14 +2,17 @@
 <%- include ../partials/header.ejs %>
 <main>
 <h1>Add a Beer</h1>
-    <form method="POST" action="/bars/<%= bar_id %>">
-        <select name="beer">
-            <% beers.forEach(function(beer) { %>
-                <option value="<%= beer._id %>"><%= beer.name %></option>
-            <% }); %>
-        </select>
-        <br>
-        <input type="submit" value="Add Beer">
-    </form>
+    <% if(beers.length) { %>
+        <% beers.forEach(function(beer) { %>
+            <form action="/bars/<%= barId %>/beers/<%= beer.id %>" class="list-group-item" method="post">
+                <button type="submit" class="btn btn-lg btn-success">
+                  <%= beer.name %>
+                  <small class="text-muted"><%= beer.style %></small>
+                </button>
+            </form>
+        <% }) %>
+    <% } else { %>
+        <h2 class="text-center">Already Serving All Beers!</h2>
+    <% } %>
 </main>
 <%- include ../partials/footer.ejs %>
