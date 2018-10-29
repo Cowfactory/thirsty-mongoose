@@ -1,0 +1,15 @@
+<!-- views/bars/addBeer.ejs -->
+<%- include ../partials/header.ejs %>
+<main>
+<h1>Add a Beer</h1>
+    <form method="POST" action="/bars/<%= bar_id %>">
+        <select name="beer">
+            <% beers.forEach(function(beer) { %>
+                <option value="<%= beer._id %>"><%= beer.name %></option>
+            <% }); %>
+        </select>
+        <br>
+        <input type="submit" value="Add Beer">
+    </form>
+</main>
+<%- include ../partials/footer.ejs %>

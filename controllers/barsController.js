@@ -1,4 +1,5 @@
 const Bar = require('../models/Bar');
+const Beer = require('../models/Beer')
 
 module.exports = {
     // VERB: GET | URL: /bars | VIEW: bars/index 
@@ -29,10 +30,25 @@ module.exports = {
     },
     // VERB: GET | URL: /bars/<id> | VIEW: bars/show 
     show: function(req, res, next) {
-        Bar.findById(req.params.id)
-            .then((bar) => {
-                res.render('bars/show', { bar });
-            })
+        Promise.all([
+            Bar.findById(req.params.id).populate('beers').exec(),
+            Beer.find({}).exec()
+        ])
+        .then(queryResult => {
+            let bar = queryResult[0];
+            let beerList = queryResult[1];
+            res.render('bars/show', { bar, beerList });
+        })
+        .catch(err => {
+            return next(err);
+        });
+        
+            // .then((bar) => {
+            //     res.render('bars/show', { bar });
+            // })
+            // .catch((err) => {
+            //     return next(err);
+            // }) 
     },
     // VERB: GET | URL: /bars/<id>/edit | VIEW: bars/index 
     edit: function(req, res, next) {
@@ -58,7 +74,34 @@ module.exports = {
             });
     },
     addBeer: function(req, res, next) {
-        
+        Promise.all([
+            Bar.findById(req.params.id).exec(),
+            Beer.findById(req.body.newBeer).exec()
+        ])
+        .then(queryResult => {
+            console.log("?:)");
+            let bar = queryResult[0];
+            let beer = queryResult[1];
+            console.log(bar, beer);
+            bar.beers.push(beer);
+            bar.save();
+            res.redirect("/bars/" + bar._id);
+        })
+        .catch(err => next(err) );
+
+        // Bar.findById(req.params.id).exec()
+        //     .then((bar) => {
+        //         Beer.findById(req.body.beer)
+        //             .then((beer) => {
+        //                 bar.beers.push(beer);
+        //                 bar.save();
+        //                 res.redirect('/bars/' + req.params.id);
+        //             })
+        //     })
+            
+        //     .catch((err) => {
+        //         return next(err);
+        //     });
     },
     removeBeer: function(req, res, next) {
 

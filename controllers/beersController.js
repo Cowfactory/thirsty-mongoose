@@ -52,7 +52,7 @@ module.exports = {
     },
     // VERB: PUT | URL: /beers/<id> | VIEW: beers/edit 
     update: function(req, res, next) {
-        Beer.findById(req.params.id)
+        Beer.find({})
             .then((beer) => {
                 beer.name = req.body.name;
                 beer.style = req.body.style;

@@ -5,10 +5,37 @@
     <p><%= bar.location %></p>
 
     <form method="POST" action="/bars/<%= bar._id %>?_method=DELETE">
-        <button class="delete" type="submit">Delete</button>
+        <button class="delete" type="submit">Delete Bar</button>
     </form>
     <form method="GET" action="/bars/<%= bar._id %>/edit">
-        <button class="btn" type="submit">Edit</button>
+        <button class="btn" type="submit">Edit Bar</button>
+    </form>
+    <!-- <form method="GET" action="/bars/<= bar._id %>/addBeer">
+        <button class="btn" type="submit">Add Beer</button>
+    </form> -->
+
+
+
+    <h3>Beers on tap:</h3>
+    <% if(bar.beers.length === 0) { %>
+        <p>This bar has no beers!</p>
+    <% } else { %>
+        <% for(beer of bar.beers) { %>
+            <p><%= beer.name %></p>
+        <% } %>
+    <% } %>
+
+    <hr>
+
+    <h3>Add a Beer</h3>
+    <form method="POST" action="/bars/<%= bar._id %>/beers">
+        <select name="newBeer">
+            <% beerList.forEach(function(beer) { %>
+                <option value="<%= beer._id %>"><%= beer.name %></option>
+            <% }); %>
+        </select>
+        <br>
+        <input type="submit" value="Add Beer">
     </form>
 </main>
 <%- include ../partials/footer.ejs %>
